@@ -66,6 +66,12 @@ repos:
         require_serial: true
         language: system
         types_or: [python, pyi]
+      - id: codespell
+        name: codespell
+        entry: codespell .
+        require_serial: true
+        language: system
+        types_or: [markdown, python, pyi, toml, yaml]
       - id: ruff-format
         name: ruff format
         entry: ruff format
@@ -73,8 +79,9 @@ repos:
         require_serial: true
         language: system
         types_or: [python, pyi]
-      - id: mypy
-        name: mypy
-        entry: mypy
+      - id: ty
+        name: ty
+        entry: ty check
+        require_serial: true
         language: system
-        types: [python]
+        types_or: [python, pyi]

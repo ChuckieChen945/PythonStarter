@@ -1,6 +1,6 @@
-[build-system]  # https://docs.astral.sh/uv/concepts/projects/config/#build-systems
-requires = ["hatchling>=1.27.0"]
-build-backend = "hatchling.build"
+[build-system]  # https://docs.astral.sh/uv/concepts/build-backend/
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
 
 [project]  # https://packaging.python.org/en/latest/specifications/pyproject-toml/
 name = "pythonstarter"
@@ -31,20 +31,26 @@ issues = "https://github.com/ChuckieChen945/PythonStarter/issues"
 
 [dependency-groups]  # https://docs.astral.sh/uv/concepts/projects/dependencies/#development-dependencies
 dev = [
+  "codespell (>=2.4.1)",
   "commitizen (>=4.3.0)",
   "coverage[toml] (>=7.6.10)",
   "ipykernel (>=6.29.4)",
   "ipython (>=8.18.0)",
   "ipywidgets (>=8.1.2)",
-  "mypy (>=1.14.1)",
   "mkdocs-material (>=9.5.21)",
   "pre-commit (>=4.0.1)",
   "pytest (>=8.3.4)",
   "pytest-mock (>=3.14.0)",
   "pytest-xdist (>=3.6.1)",
   "ruff (>=0.9.2)",
+  "ty (>=0.0.6)",
   "typeguard (>=4.4.1)",
 ]
+
+[tool.codespell]  # https://github.com/codespell-project/codespell
+builtin = "en-GB_to_en-US,clear,code,rare"
+check-filenames = true
+skip = "./*_cache/,./.venv,./reports"
 
 [tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/
 bump_message = "bump: v$current_version → v$new_version"
@@ -66,25 +72,6 @@ source = ["src"]
 
 [tool.coverage.xml]  # https://coverage.readthedocs.io/en/latest/config.html#xml
 output = "reports/coverage.xml"
-
-[tool.mypy]  # https://mypy.readthedocs.io/en/latest/config_file.html
-junit_xml = "reports/mypy.xml"
-plugins = "pydantic.mypy"
-strict = true
-disallow_subclassing_any = false
-disallow_untyped_decorators = false
-ignore_missing_imports = true
-pretty = true
-show_column_numbers = true
-show_error_codes = true
-show_error_context = true
-warn_unreachable = true
-
-[tool.pydantic-mypy]  # https://docs.pydantic.dev/latest/integrations/mypy/#configuring-the-plugin
-init_forbid_extra = true
-init_typed = true
-warn_required_dynamic_aliases = true
-warn_untyped_fields = true
 
 [tool.pytest.ini_options]  # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
 addopts = "--color=yes --doctest-modules --exitfirst --failed-first --strict-config --strict-markers --verbosity=2 --junitxml=reports/pytest.xml"
@@ -121,6 +108,12 @@ max-doc-length = 100
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.ty.rules]
+unused-ignore-comment = "warn"
+
+[tool.ty.terminal]
+error-on-warning = true
 
 [tool.poe.executor]  # https://github.com/nat-n/poethepoet
 type = "simple"
