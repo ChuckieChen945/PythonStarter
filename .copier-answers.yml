@@ -1,0 +1,13 @@
+_commit: v1.6.0
+_src_path: https://github.com/superlinear-ai/substrate.git
+author_email: chuckie_chen@outlook.com
+author_name: Chuckie Chen
+project_description: Python starter
+project_name: PythonStarter
+project_type: app
+project_url: https://github.com/ChuckieChen945/PythonStarter
+python_version: '3.13'
+typing: strict
+with_conventional_commits: true
+with_fastapi_api: true
+with_typer_cli: true
