@@ -12,4 +12,4 @@ app = typer.Typer()
 def fire(name: str = "Chell") -> None:
     """Fire portal gun."""
     rprint(f"[bold red]Alert![/bold red] {name} fired [green]portal gun[/green] :boom:")
-    logger.debug(f"Log settings: {settings.log}")
+    logger.debug(f"Log settings: {settings}")

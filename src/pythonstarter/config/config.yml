@@ -9,3 +9,9 @@ log:
     info_path: logs/out.log
     # 错误 err 文件路径
     error_path: logs/err.log
+
+database:
+    user: root
+    password: rootpassword
+    server: localhost
+    database: test
