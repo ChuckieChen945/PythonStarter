@@ -14,17 +14,15 @@ from pydantic_settings import (
 
 from pythonstarter.common.path import CONFIG_ROOT, PROJECT_ROOT, SECRETS_ROOT
 
-# ========= .env =========
+# Load .env from config directory if present
 load_dotenv(CONFIG_ROOT / ".env")
 
 
-# ========= YAML files =========
+# YAML files: base config plus env-specific override when ENV is set
 _env = getenv("ENV")
-_yaml_files = (
-    [CONFIG_ROOT / "config.yml", CONFIG_ROOT / f"config_{_env}.yml"]
-    if _env
-    else [CONFIG_ROOT / "config.yml"]
-)
+_yaml_files = [CONFIG_ROOT / "config.yml"]
+if _env:
+    _yaml_files.append(CONFIG_ROOT / f"config_{_env}.yml")
 
 
 class LogConfig(BaseSettings):
@@ -35,20 +33,11 @@ class LogConfig(BaseSettings):
     @field_validator("info_path", "error_path", mode="before")
     @classmethod
     def resolve_relative_path(cls, v: str | None) -> Path | None:
-        """将相对路径解析为以 PROJECT_ROOT 为基准的绝对路径.
-
-        Args:
-            v (str | None): _description_
-
-        Returns
-        -------
-            Path | None: _description_
-        """
+        """Resolve relative paths against PROJECT_ROOT; accept None."""
         if v is None:
             return None
 
         path = Path(v)
-
         if not path.is_absolute():
             path = PROJECT_ROOT / path
 
@@ -59,6 +48,7 @@ class AppConfig(BaseSettings):
     log_level: str | None = None
     log: LogConfig | None = None
 
+    # Let pydantic-settings load YAML files and secrets dir automatically
     model_config = SettingsConfigDict(
         secrets_dir=SECRETS_ROOT, yaml_file=_yaml_files, yaml_file_encoding="utf-8"
     )
@@ -77,6 +67,7 @@ class AppConfig(BaseSettings):
 
 
 settings = AppConfig()
+
 
 if __name__ == "__main__":
     print(settings.model_dump())
