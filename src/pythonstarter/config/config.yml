@@ -1,9 +1,11 @@
+# DEBUG
+# INFO
 log_level: debug
 
 log:
     # 是否将日志输出到文件
-    to_file: false
+    to_file: true
     # out 文件路径
-    output: ../../../../logs/out.log
+    output: D:/logs/out.log
     # 错误 err 文件路径
-    error: ../../../../logs/err.log
+    error: D:/logs/err.log
