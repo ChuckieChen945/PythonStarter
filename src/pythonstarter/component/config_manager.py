@@ -4,9 +4,10 @@ from os import getenv
 from pathlib import Path
 
 from dotenv import load_dotenv
-from pydantic import PostgresDsn, field_validator
+from pydantic import PostgresDsn, SecretStr, field_validator
 from pydantic_settings import (
     BaseSettings,
+    NestedSecretsSettingsSource,
     PydanticBaseSettingsSource,
     SettingsConfigDict,
     YamlConfigSettingsSource,
@@ -47,8 +48,8 @@ class LogConfig(BaseSettings):
 class DatabaseConnectionConfig(BaseSettings):
     """Settings for database connection"""
 
-    user: str
-    password: str
+    user: SecretStr
+    password: SecretStr
     database: str
     server: str
 
@@ -56,8 +57,8 @@ class DatabaseConnectionConfig(BaseSettings):
     def postgres_uri(self) -> PostgresDsn:
         return PostgresDsn.build(
             scheme="postgresql",
-            username=self.user,
-            password=self.password,
+            username=str(self.user),
+            password=str(self.password),
             host=self.server,
             path=f"/{self.database}",
         )
@@ -70,8 +71,11 @@ class AppConfig(BaseSettings):
 
     # Let pydantic-settings load YAML files and secrets dir automatically
     model_config = SettingsConfigDict(
-        secrets_dir=SECRETS_ROOT, yaml_file=_yaml_files, yaml_file_encoding="utf-8"
-    )
+        secrets_dir=SECRETS_ROOT,
+        secrets_nested_subdir=True,
+        yaml_file=_yaml_files,
+        yaml_file_encoding="utf-8",
+    )  # type: ignore
 
     @classmethod
     def settings_customise_sources(
@@ -82,8 +86,14 @@ class AppConfig(BaseSettings):
         dotenv_settings: PydanticBaseSettingsSource,
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
-        # TODO: deep_merge https://docs.pydantic.dev/dev/concepts/pydantic_settings/#other-settings-source
-        return (YamlConfigSettingsSource(settings_cls),)
+        return (
+            # TODO: deep_merge https://docs.pydantic.dev/dev/concepts/pydantic_settings/#other-settings-source
+            YamlConfigSettingsSource(settings_cls),
+            init_settings,
+            env_settings,
+            dotenv_settings,
+            NestedSecretsSettingsSource(file_secret_settings),
+        )
 
 
 settings = AppConfig()

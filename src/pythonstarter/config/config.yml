@@ -11,7 +11,6 @@ log:
     error_path: logs/err.log
 
 database:
-    user: root
-    password: rootpassword
+    # `user` 和 `password` 在 secrets 目录（secrets/database/user, secrets/database/password）
     server: localhost
     database: test
