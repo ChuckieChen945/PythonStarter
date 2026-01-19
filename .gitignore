@@ -67,3 +67,5 @@ dist/
 
 # VS Code
 .vscode/
+
+secrets/

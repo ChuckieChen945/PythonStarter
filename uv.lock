@@ -1391,6 +1391,7 @@ dependencies = [
     { name = "fastapi", extra = ["all"] },
     { name = "gunicorn" },
     { name = "poethepoet" },
+    { name = "pydantic-settings" },
     { name = "typer" },
 ]
 
@@ -1417,6 +1418,7 @@ requires-dist = [
     { name = "fastapi", extras = ["all"], specifier = ">=0.115.6" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "poethepoet", specifier = ">=0.32.1" },
+    { name = "pydantic-settings", specifier = ">=2.12.0" },
     { name = "typer", specifier = ">=0.15.1" },
 ]
 
