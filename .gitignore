@@ -68,4 +68,6 @@ dist/
 # VS Code
 .vscode/
 
+# 项目相关
+logs/
 secrets/

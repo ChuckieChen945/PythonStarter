@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from os import getenv
+from pathlib import Path
 
 from dotenv import load_dotenv
+from pydantic import field_validator
 from pydantic_settings import (
     BaseSettings,
     PydanticBaseSettingsSource,
@@ -10,7 +12,7 @@ from pydantic_settings import (
     YamlConfigSettingsSource,
 )
 
-from pythonstarter.common.path import CONFIG_ROOT, SECRETS_ROOT
+from pythonstarter.common.path import CONFIG_ROOT, PROJECT_ROOT, SECRETS_ROOT
 
 # ========= .env =========
 load_dotenv(CONFIG_ROOT / ".env")
@@ -27,8 +29,30 @@ _yaml_files = (
 
 class LogConfig(BaseSettings):
     to_file: bool | None = None
-    output: str | None = None
-    error: str | None = None
+    info_path: Path | None = None
+    error_path: Path | None = None
+
+    @field_validator("info_path", "error_path", mode="before")
+    @classmethod
+    def resolve_relative_path(cls, v: str | None) -> Path | None:
+        """将相对路径解析为以 PROJECT_ROOT 为基准的绝对路径.
+
+        Args:
+            v (str | None): _description_
+
+        Returns
+        -------
+            Path | None: _description_
+        """
+        if v is None:
+            return None
+
+        path = Path(v)
+
+        if not path.is_absolute():
+            path = PROJECT_ROOT / path
+
+        return path.resolve()
 
 
 class AppConfig(BaseSettings):

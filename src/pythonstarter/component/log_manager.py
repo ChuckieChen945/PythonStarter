@@ -10,7 +10,7 @@ def _configure_logger() -> None:
 
     if getattr(settings.log, "to_file", False):
         logger.add(
-            settings.log.output,
+            settings.log.info_path,
             level=log_level,
             rotation="10 MB",
             retention="7 days",
@@ -18,7 +18,7 @@ def _configure_logger() -> None:
             enqueue=True,
         )
         logger.add(
-            settings.log.error,
+            settings.log.error_path,
             level="WARNING",
             rotation="10 MB",
             retention="30 days",

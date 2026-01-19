@@ -5,7 +5,7 @@ log_level: debug
 log:
     # 是否将日志输出到文件
     to_file: true
-    # out 文件路径
-    output: D:/logs/out.log
+    # 代码会把相对路径解析为以 PROJECT_ROOT 为基准的绝对路径
+    info_path: logs/out.log
     # 错误 err 文件路径
-    error: D:/logs/err.log
+    error_path: logs/err.log
