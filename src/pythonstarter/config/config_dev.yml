@@ -1,1 +1,5 @@
-log_level: debug
+log_level: DEBUG
+
+database:
+    server: localhost
+    database: dev

@@ -1,6 +1,6 @@
 # DEBUG
 # INFO
-log_level: debug
+log_level: DEBUG
 
 log:
     # 是否将日志输出到文件
@@ -13,4 +13,4 @@ log:
 database:
     # `user` 和 `password` 在 secrets 目录（secrets/database/user, secrets/database/password）
     server: localhost
-    database: test
+    database: main
